@@ -1,11 +1,6 @@
 /**
  * Exec shell commands
  * https://nodejs.org/api/child_process.html
- * 
- * Shortcuts:
- *  - remove untagged images: docker rmi `docker images -qf dangling=true`
- *  - remove all images: docker rmi $(docker images -q)
- *  - remove exited containers: docker rm `docker ps -aqf status=exited`
  */
 'use strict';
 const os = require('os');
@@ -71,10 +66,35 @@ function check_system(callback) {
     }
 }
 
+function stats() {
+    exec('docker images', (err, stdout) => {
+        if(!err) {
+            let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            let list = stdout.split('\n');
+            let size_position = list[0].indexOf('SIZE');
+            let bytes = 0;
+
+            for(let i=1; i<list.length; i++) {
+                // console.log(list[i].split(' '));
+                let tuple = list[i].substring(size_position, list[i].length).split(' ');
+                let floaty = parseFloat(tuple[0]);
+                if(!Number.isNaN(floaty)) {
+                    let power = sizes.indexOf(tuple[1]);
+                    bytes += floaty * Math.pow(1024, power > -1 ? power : 0);
+                }
+            }
+            let formatted = (bytes / Math.pow(1024, 3)).toPrecision(3);
+            console.log('Images Size: ' + formatted + 'GB');
+        }
+    });    
+}
+
 module.exports = {
     check_system: check_system,
     remove_all: () => {_exec('docker rmi $(docker images -q)');},
     remove_untagged: () => {_exec('docker rmi `docker images -qf dangling=true`');},
     remove_images: remove_images,
-    remove_exited: () => {_exec('docker rm `docker ps -aqf status=exited`');}
+    stats: stats,
+    remove_exited: () => {_exec('docker rm `docker ps -aqf status=exited`');},
+    stopall: () => {_exec('docker stop `docker ps -q`')}
 };

@@ -28,3 +28,13 @@ Delete all exited containers:
 ```
 doctape rm_exited
 ```
+
+Stop all running containers
+```
+doctape stopall
+```
+
+Show total disk usages:
+```
+doctape stats
+```

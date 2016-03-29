@@ -18,6 +18,7 @@ tape.check_system((err) => {
 program.version('0.0.1');
 program
     .command('rmi_untagged')
+    .alias('clean')
     .description('Remove all untagged images', {})
     .action(tape.remove_untagged);
 program
@@ -28,4 +29,12 @@ program
     .command('rm_exited')
     .description('Remove all exited containers')
     .action(tape.remove_exited);
+program
+    .command('stopall')
+    .description('Stop all running containers')
+    .action(tape.stopall);
+program
+    .command('stats')
+    .description('Disk consumption of images')
+    .action(tape.stats);
 program.parse(process.argv);
