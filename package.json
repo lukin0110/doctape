@@ -1,0 +1,31 @@
+{
+  "name": "doctape",
+  "version": "0.0.1",
+  "description": "Command line utilities to keep the Docker house clean",
+  "bin": {
+    "doctape": "./bin/tape.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukin0110/doctape.git"
+  },
+  "keywords": [
+    "docker",
+    "utlity",
+    "nix",
+    "bash"
+  ],
+  "author": "Maarten Huijsmans",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/lukin0110/doctape/issues"
+  },
+  "homepage": "https://github.com/lukin0110/doctape#readme",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
